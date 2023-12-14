@@ -5,16 +5,27 @@ from config import chatgpt_token
 
 client = OpenAI(api_key=chatgpt_token)
 
-
 app = Flask(__name__)
-petr = "Петр 1 промпт.txt"
-ivan = "промпт иван грозный.txt"
-with open("prompts/" + petr, "rb") as file:
-    prefix = file.read().decode()
+petrPromptName = "Петр 1 промпт.txt"
+ivanPromptName = "промпт иван грозный.txt"
+petrOption = "Пётр I"
+ivanOption = "Иван Грозный"
 
 
+# with open("prompts/" + petr, "rb") as file:
+#     prefixPetr = file.read().decode()
 
-def send_message_to_gpt(content: str) -> str:
+def readFile(tup):
+    option, filename = tup
+    with open("prompts/" + filename, "rb") as file:
+        return option, file.read().decode()
+
+
+prefixes = dict(map(readFile, {petrOption: petrPromptName,
+                               ivanOption: ivanPromptName}.items()))
+
+
+def send_message_to_gpt(content: str, prefix: str) -> str:
     completion = client.chat.completions.create(
         messages=[
             {"role": "system", "content": prefix},
@@ -35,18 +46,22 @@ def index():
 @app.route('/process', methods=['POST'])
 def process():
     user_input = request.form['data']
+    chosen_character = request.form['option']
+    if chosen_character not in prefixes:
+        return "Вселенная: Выберите персонажа для диалога"
     try:
-        processed_data = send_message_to_gpt(user_input)
+        processed_data = send_message_to_gpt(user_input, prefixes[chosen_character])
     except:
         processed_data = "Вселенная: Включите vpn для работы приложения"
     return processed_data
+
 
 @app.route('/processOption', methods=['POST'])
 def processOption():
     user_input = request.form['option']
     table = {
-        "Пётр I": "petya.png",
-        "Иван Грозный": "Vanya.png"
+        petrOption: "petya.png",
+        ivanOption: "Vanya.png"
     }
 
     return table[user_input]
