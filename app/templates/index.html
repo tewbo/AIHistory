@@ -5,12 +5,25 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="chat-container">
-        <div id="chat-box"></div>
-        <input type="text" id="user-input" placeholder="Введите сообщение">
-        <button onclick="sendMessage()">Отправить</button>
-    </div>
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+<!-- Добавляем полосу с вариантами выбора -->
+<div id="options-bar">
+    <button onclick="selectOption('Пётр I')">Пётр I</button>
+    <button onclick="selectOption('Иван Грозный')">Иван Грозный</button>
+    <button onclick="selectOption('option3')">Вариант 3</button>
+</div>
+
+<!-- Добавляем контейнер для анимации -->
+<div id="animation-container"></div>
+
+<div class="chat-container">
+    <div id="chat-box"></div>
+    <input type="text" id="user-input" placeholder="Введите сообщение">
+    <button onclick="sendMessage()">Отправить</button>
+</div>
+
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
