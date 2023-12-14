@@ -38,7 +38,7 @@ def process():
     try:
         processed_data = send_message_to_gpt(user_input)
     except:
-        processed_data = "Благомыслие великаго князя, тебе следует включити виртуальную частную сеть (VPN) для обеспечения безопаснаго и защищеннаго интернет-соединения."
+        processed_data = "Вселенная: Включите vpn для работы приложения"
     return processed_data
 
 @app.route('/processOption', methods=['POST'])
