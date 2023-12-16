@@ -1,3 +1,5 @@
+from time import sleep
+
 from flask import *
 from openai import OpenAI
 
@@ -44,12 +46,13 @@ def process():
     user_input = request.form['data']
     chosen_character = request.form['option']
     if chosen_character not in prefixes:
-        return "Вселенная: Выберите персонажа для диалога"
+        return "Система: Выберите персонажа для диалога"
     try:
         processed_data = send_message_to_gpt(user_input, prefixes[chosen_character])
     except:
-        processed_data = "Вселенная: Включите vpn для работы приложения"
-    return processed_data
+        sleep(3)
+        return "Система: Включите vpn для работы приложения"
+    return f"{chosen_character}:{processed_data}"
 
 
 @app.route('/processOption', methods=['POST'])
