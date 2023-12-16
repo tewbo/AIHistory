@@ -21,6 +21,9 @@ function selectOption(option) {
         // Отображаем анимацию с изображением в левой части страницы
         const animationContainer = document.getElementById('animation-container');
         animationContainer.innerHTML = `<img id="animation" src="static/images/` + data + `" width=" 300" height="402" alt="Картинка с персонажем">`
+        animationContainer.classList.remove('run-animation');
+        animationContainer.offsetWidth;
+        animationContainer.classList.add('run-animation');
 
         // Очищаем поле ввода
         document.getElementById('user-input').value = '';

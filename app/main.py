@@ -11,10 +11,6 @@ ivanPromptName = "промпт иван грозный.txt"
 petrOption = "Пётр I"
 ivanOption = "Иван Грозный"
 
-
-# with open("prompts/" + petr, "rb") as file:
-#     prefixPetr = file.read().decode()
-
 def readFile(tup):
     option, filename = tup
     with open("prompts/" + filename, "rb") as file:
@@ -61,7 +57,7 @@ def processOption():
     user_input = request.form['option']
     table = {
         petrOption: "petya.png",
-        ivanOption: "Vanya.png"
+        ivanOption: "vanya.png"
     }
 
     return table[user_input]

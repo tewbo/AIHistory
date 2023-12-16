@@ -99,6 +99,20 @@ button:hover {
     margin-top: 20px;
 }
 
+@keyframes ani {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.run-animation {
+    animation: ani 2.5s forwards;
+}
+
+
 html {
 
     background-image: url(images/background_church.jpg);
