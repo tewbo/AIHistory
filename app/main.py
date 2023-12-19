@@ -10,8 +10,11 @@ client = OpenAI(api_key=chatgpt_token)
 app = Flask(__name__)
 petrPromptName = "Петр 1 промпт.txt"
 ivanPromptName = "промпт иван грозный.txt"
+stalinPromptName = "Сталин промпт.txt"
+
 petrOption = "Пётр I"
 ivanOption = "Иван Грозный"
+stalinOption = "Иосиф Сталин"
 
 def readFile(tup):
     option, filename = tup
@@ -20,7 +23,8 @@ def readFile(tup):
 
 
 prefixes = dict(map(readFile, {petrOption: petrPromptName,
-                               ivanOption: ivanPromptName}.items()))
+                               ivanOption: ivanPromptName,
+                               stalinOption: stalinPromptName}.items()))
 
 
 def send_message_to_gpt(content: str, prefix: str) -> str:
@@ -52,7 +56,7 @@ def process():
     except:
         sleep(3)
         return "Система: Включите vpn для работы приложения"
-    return f"{chosen_character}:{processed_data}"
+    return f"{chosen_character}: {processed_data}"
 
 
 @app.route('/processOption', methods=['POST'])
@@ -60,7 +64,8 @@ def processOption():
     user_input = request.form['option']
     table = {
         petrOption: "petya.png",
-        ivanOption: "vanya.png"
+        ivanOption: "vanya.png",
+        stalinOption: "stalin.png"
     }
 
     return table[user_input]
