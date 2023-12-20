@@ -1,4 +1,5 @@
 let selectedOption = null;  // здесь хранится выбранный персонаж
+let history = []
 
 // Добавляем функцию для выбора варианта
 function selectOption(option) {
@@ -16,18 +17,19 @@ function selectOption(option) {
         },
         body: 'option=' + option,
     })
-    .then(response => response.text())
-    .then(data => {
-        // Отображаем анимацию с изображением в левой части страницы
-        const animationContainer = document.getElementById('animation-container');
-        animationContainer.innerHTML = `<img id="animation" src="static/images/` + data + `" width=" 300" height="402" alt="Картинка с персонажем">`
-        animationContainer.classList.remove('run-animation');
-        animationContainer.offsetWidth;
-        animationContainer.classList.add('run-animation');
+        .then(response => response.text())
+        .then(data => {
+            // Отображаем анимацию с изображением в левой части страницы
+            const animationContainer = document.getElementById('animation-container');
+            animationContainer.innerHTML = `<img id="animation" src="static/images/` + data + `" width=" 300" height="402" alt="Картинка с персонажем">`
+            animationContainer.classList.remove('run-animation');
+            animationContainer.offsetWidth;
+            animationContainer.classList.add('run-animation');
 
-        // Очищаем поле ввода
-        document.getElementById('user-input').value = '';
-    });
+            // Очищаем поле ввода
+            document.getElementById('user-input').value = '';
+            history = []
+        });
 }
 
 // Добавляем функцию для отправки сообщения пользователя
@@ -56,14 +58,16 @@ function sendMessage() {
     fetch('/process', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/json',
         },
-        body: 'data=' + userInput  + '&option=' + selectedOption,
+        body: JSON.stringify({"data": userInput, "option": selectedOption, "history": history}),
     })
-    .then(response => response.text())
-    .then(data => {
-        clearInterval(interval);
-        chatBox.innerHTML = chatBox.innerHTML.replace(regExp, '<div class="system-message">' + data + '</div>')
-        document.getElementById('user-input').value = ''; // Очистка поля ввода
-    });
+        .then(response => response.text())
+        .then(data => {
+            clearInterval(interval);
+            chatBox.innerHTML = chatBox.innerHTML.replace(regExp, '<div class="system-message">' + data + '</div>')
+            document.getElementById('user-input').value = ''; // Очистка поля ввода
+            history.push(userInput)
+            history.push(data)
+        });
 }
