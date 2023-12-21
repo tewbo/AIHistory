@@ -72,6 +72,9 @@ function sendMessage() {
                 character = selectedOption
             }
             chatBox.innerHTML = chatBox.innerHTML.replace(regExp, '<div class="system-message"><i>' + character + "</i>: " + data.message_body + '</div>')
+            const allSelects = document.getElementsByClassName("system-message");
+            const lastSelect = allSelects[allSelects.length - 1];
+            lastSelect.scrollIntoView();
             document.getElementById('user-input').value = ''; // Очистка поля ввода
             history.push(userInput)
             history.push(json.message_body)
