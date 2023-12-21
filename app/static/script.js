@@ -4,7 +4,7 @@ let history = []
 // Добавляем функцию для выбора варианта
 function selectOption(option) {
     const chatBox = document.getElementById('chat-box');
-    chatBox.innerHTML += '<div class="system-message">' + 'Система: Вы выбрали персонажа <i>' + option + '</i></div>';
+    chatBox.innerHTML += '<div class="system-message">' + '<i>Система</i>: Вы выбрали персонажа <i>' + option + '</i></div>';
 
     // Сохраняем выбор пользователя в локальной переменной
     selectedOption = option;
@@ -40,7 +40,7 @@ function sendMessage() {
     chatBox.innerHTML += '<div class="user-message">' + userInput + '</div>'; // Вывод сообщения пользователя справа
 
     // Вывод системного сообщения
-    let systemMessageTemplate = '<div class="system-message">Система: Призываем духов';
+    let systemMessageTemplate = '<div class="system-message"><i>Система</i>: Призываем духов';
     let regExp = new RegExp(systemMessageTemplate + '[^<]*<\/div>')
     chatBox.innerHTML += systemMessageTemplate + '</div>';
 
@@ -50,7 +50,6 @@ function sendMessage() {
         dotsCount %= 3
         dotsCount++;
         let systemMessage = systemMessageTemplate + '.'.repeat(dotsCount);
-        console.log(regExp.test('<div class="system-message">Система: Призываем духов...</div>'))
         chatBox.innerHTML = chatBox.innerHTML.replace(regExp, systemMessage + '</div>');
     }, 1000);
 
@@ -62,12 +61,19 @@ function sendMessage() {
         },
         body: JSON.stringify({"data": userInput, "option": selectedOption, "history": history}),
     })
-        .then(response => response.text())
+        .then(response => response.json())
         .then(data => {
+            let json = data
             clearInterval(interval);
-            chatBox.innerHTML = chatBox.innerHTML.replace(regExp, '<div class="system-message">' + data + '</div>')
+            let character = ""
+            if (json.system_resp === true) {
+                character = 'Система'
+            } else {
+                character = selectedOption
+            }
+            chatBox.innerHTML = chatBox.innerHTML.replace(regExp, '<div class="system-message"><i>' + character + "</i>: " + data.message_body + '</div>')
             document.getElementById('user-input').value = ''; // Очистка поля ввода
             history.push(userInput)
-            history.push(data)
+            history.push(json.message_body)
         });
 }

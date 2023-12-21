@@ -51,14 +51,20 @@ def process():
     user_input = request.json['data']
     chosen_character = request.json['option']
     history = request.json['history']
+    system_resp = False
+    message = ""
     if chosen_character not in prefixes:
-        return "Система: Выберите персонажа для диалога"
-    try:
-        processed_data = send_message_to_gpt(user_input, prefixes[chosen_character], history)
-    except:
-        sleep(3)
-        return "Система: Включите vpn для работы приложения"
-    return f"{chosen_character}: {processed_data}"
+        system_resp = True
+        message = "Выберите персонажа для диалога"
+    else:
+        try:
+            message = send_message_to_gpt(user_input, prefixes[chosen_character], history)
+        except:
+            sleep(3)
+            system_resp = True
+            message = "Включите vpn для работы приложения"
+    return json.dumps({"system_resp": system_resp,
+                       "message_body": message})
 
 
 @app.route('/processOption', methods=['POST'])
