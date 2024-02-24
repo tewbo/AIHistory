@@ -59,9 +59,11 @@ def process():
     else:
         try:
             message = send_message_to_gpt(user_input, prefixes[chosen_character], history)
-        except:
+        except Exception as inst:
+            print(inst)
             sleep(3)
             system_resp = True
+
             message = "Включите vpn для работы приложения"
     return json.dumps({"system_resp": system_resp,
                        "message_body": message})
