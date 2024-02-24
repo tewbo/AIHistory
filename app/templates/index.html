@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Чат</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<!-- Добавляем полосу с вариантами выбора -->
+<div id="options-bar">
+    <button onclick="selectOption('Пётр I')">Пётр I</button>
+    <button onclick="selectOption('Иван Грозный')">Иван Грозный</button>
+    <button onclick="selectOption('Иосиф Сталин')">Иосиф сталин</button>
+</div>
+
+<!-- Добавляем контейнер для анимации -->
+<div id="animation-container">
+    <img id="animation" src="static/images/who.png" width=" 300" height="402" alt="Картинка с персонажем">
+</div>
+
+
+<div class="chat-container">
+    <div id="chat-box"></div>
+    <input type="text" id="user-input" placeholder="Введите сообщение">
+    <button onclick="sendMessage()">Отправить</button>
+</div>
+
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
